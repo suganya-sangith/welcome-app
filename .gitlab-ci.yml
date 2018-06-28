@@ -31,10 +31,11 @@ deploy_staging:
 
 deploy_prod:
   stage: deploy
+  image: ruby:2.5
   script:
     - echo "Deploy to production server"
-    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/production-welcome-app.git
-    - git push heroku master
+    - gem install dpl
+    - dpl --provider=heroku --app=production-welcome-app --api-key=$HEROKU_API_KEY
   environment:
     name: production
     url: https://production-welcome-app.herokuapp.com/
