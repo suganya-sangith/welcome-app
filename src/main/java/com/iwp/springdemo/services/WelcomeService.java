@@ -4,7 +4,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class WelcomeService {
-    public String getMessage() {
-        return "Hello IWP";
+    private static final String WELCOME_MESSAGE = "Welcome to IWP!";
+    private static final String HELLO = "Hello";
+
+    public String getMessage(String name) {
+        return HELLO + " " + name + ", " + WELCOME_MESSAGE;
     }
 }
