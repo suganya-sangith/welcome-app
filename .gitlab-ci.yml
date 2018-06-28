@@ -8,25 +8,21 @@ stages:
 test:
   stage: test
   script:
-    - echo "Building the app"
+    - echo "Testing the app"
     - ./gradlew test
-  only:
-  - master
 
 build:
   stage: build
   script:
     - echo "Building the app"
     - ./gradlew clean build
-  only:
-  - master
 
 deploy_staging:
   stage: deploy
   script:
     - echo "Deploy to staging server"
-    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/staging-welcome-app.git
-    - git push heroku master
+    - gem install dpl
+    - dpl --provider=heroku --app=staging-welcome-app --api-key=$HEROKU_API_KEY
   environment:
     name: staging
     url: https://staging-welcome-app.herokuapp.com/
@@ -37,8 +33,8 @@ deploy_prod:
   stage: deploy
   script:
     - echo "Deploy to production server"
-    - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/production-welcome-app.git
-    - git push heroku master
+    - gem install dpl
+    - dpl --provider=heroku --app=production-welcome-app --api-key=$HEROKU_API_KEY
   environment:
     name: production
     url: https://production-welcome-app.herokuapp.com/
