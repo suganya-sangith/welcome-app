@@ -1,0 +1,47 @@
+image: java:8
+
+stages:
+  - test
+  - build
+  - deploy
+
+test:
+  stage: test
+  script:
+    - echo "Building the app"
+    - ./gradlew test
+  only:
+  - master
+
+build:
+  stage: build
+  script:
+    - echo "Building the app"
+    - ./gradlew clean build
+  only:
+  - master
+
+deploy_staging:
+  stage: deploy
+  script:
+    - echo "Deploy to staging server"
+    - git remote add heroku https://gitlab.com/archanachillala/welcome-app.git
+    - git push heroku master
+  environment:
+    name: staging
+    url: https://staging-welcome-app.herokuapp.com/
+  only:
+  - master
+
+deploy_prod:
+  stage: deploy
+  script:
+    - echo "Deploy to production server"
+    - git remote add heroku https://gitlab.com/archanachillala/welcome-app.git
+    - git push heroku master
+  environment:
+    name: production
+    url: https://production-welcome-app.herokuapp.com/
+  when: manual
+  only:
+  - master
