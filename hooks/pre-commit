@@ -1,4 +1,14 @@
 #!/bin/sh
-echo "pre-commit hook started - running tests"
+
+# Stash unstaged changes
+git stash -q --keep-index
+
+# Test the commit
 ./gradlew test
-echo "pre-commit hook ended"
+RESULT=$?
+
+# Pop last stashed changes
+git stash pop -q
+
+[ $RESULT -ne 0 ] && exit 1
+exit 0
