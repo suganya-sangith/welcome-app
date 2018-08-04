@@ -1,0 +1,4 @@
+#!/bin/sh
+echo "pre-commit hook started - running tests"
+./gradlew test
+echo "pre-commit hook ended"
